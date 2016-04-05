@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Players">
+      <UniqueIdentifier>{1e3f7750-4338-4c93-be4e-6faf002a3cec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Players">
+      <UniqueIdentifier>{8a5ea68b-fdbe-43ba-aa79-8ae18ba93bf5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Network">
+      <UniqueIdentifier>{fd48768e-555a-4366-a5fe-d11f137bf995}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Network">
+      <UniqueIdentifier>{99b28f1a-b4ed-4a33-8bff-ca4ef88584b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ScriptDragon">
+      <UniqueIdentifier>{0c80b314-a273-43fd-8fe6-e47b03656360}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="skse">
+      <UniqueIdentifier>{bf404e96-aab2-4eaf-96fe-a771b17f149f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Client-Skyrim.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyPlayer.h">
+      <Filter>Header Files\Players</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyServerLink.h">
+      <Filter>Header Files\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptDragon\enums.h">
+      <Filter>ScriptDragon</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptDragon\invoke.h">
+      <Filter>ScriptDragon</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptDragon\obscript.h">
+      <Filter>ScriptDragon</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptDragon\plugin.h">
+      <Filter>ScriptDragon</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptDragon\skyscript.h">
+      <Filter>ScriptDragon</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptDragon\types.h">
+      <Filter>ScriptDragon</Filter>
+    </ClInclude>
+    <ClInclude Include="skseHeaders\skse\Hooks_SaveLoad.h">
+      <Filter>skse</Filter>
+    </ClInclude>
+    <ClInclude Include="reference_handler.h">
+      <Filter>Header Files\Players</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Client-Skyrim.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyPlayer.cpp">
+      <Filter>Source Files\Players</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyServerLink .cpp">
+      <Filter>Source Files\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptDragon\plugin.cpp">
+      <Filter>ScriptDragon</Filter>
+    </ClCompile>
+    <ClCompile Include="Hooks_SaveLoad.cpp">
+      <Filter>skse</Filter>
+    </ClCompile>
+    <ClCompile Include="reference_handler.cpp">
+      <Filter>Source Files\Players</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="exports.def">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="ScriptDragon\plugin.def">
+      <Filter>ScriptDragon</Filter>
+    </None>
+  </ItemGroup>
+</Project>
