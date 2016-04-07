@@ -107,7 +107,7 @@ namespace Network {
 		AcceptException(int errCode);
 	};
   class SocketOptionException : public NetworkException {
-    static constexpr auto topMessage = "Unable to accept connection";
+    static constexpr auto topMessage = "Socket option failed.";
   public:
     SocketOptionException(int errCode);
   };

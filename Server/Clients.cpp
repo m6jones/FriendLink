@@ -46,7 +46,7 @@ Client::Client(Clients& clients, size_t size, size_t my_server_slot,
     reliable_data_[i] = make_shared<Data::Sharing::FixedQueue>();
 	}
 
-	assert(size < 256 && index < 256);
+	//assert(size < 256 && index < 256);
 	Send(*socket_tcp_, InitialMessage{ uint8_t(size), uint8_t(my_server_slot_) });
   clients_.SendReliableToAll(
       Packet::PackStatus(uint8_t(my_server_slot_), Packet::Status::kNew));
@@ -89,12 +89,12 @@ void Client::SendLoop() {
 			for (size_t i = 0; i < data_.size(); ++i) {
 				auto reliable_packet = reliable_data_[i]->Pop();
 				if (*reliable_data_[i]) {
-					Packet::Send(*socket_tcp_, reliable_packet);
+					Packet::Send(*socket_tcp_, Packet::Packet{reliable_packet});
           something_sent = true;
 				}
         auto packet = data_[i]->Pop();
         if (*data_[i]) {
-          Packet::Send(*socket_udp_, packet);
+          Packet::Send(*socket_udp_, Packet::Packet{packet});
           something_sent = true;
         }
 			}
@@ -164,6 +164,7 @@ bool Clients::Push(unique_ptr<Socket> socket_tcp,
 			return true;
 		}
 	}
+  Send(*socket_tcp, InitialMessage{0, 0});
   return false;
 }
 void Clients::SendInitialClientDataTo(Socket& socket) {
@@ -211,7 +212,7 @@ void Listen::AcceptClient() {
   try {
     auto address = make_shared<sockaddr_in>();
     auto client_socket_tcp = Accept(*listener_tcp_, address);
-
+    Error::LogToFile(AddressToString(*address));
     //Connecting to client receiver
     SetAddressPort(*address, client_port_);
     auto client_socket_udp = ConnectTo(*address, SOCK_DGRAM, IPPROTO_UDP);
@@ -219,7 +220,7 @@ void Listen::AcceptClient() {
     if (clients_.Push(move(client_socket_tcp), move(client_socket_udp))) {
       Error::LogToFile("Connected: "+AddressToString(*address));
     } else {
-      Send(*client_socket_tcp, InitialMessage{0, 0}); //Server doesn't accept
+      //Server doesn't accept
     }
   } catch (AcceptException e) {
     if (e.code() != WSAEINTR) {//Happens when I close the  listening socket to force the accept to return.

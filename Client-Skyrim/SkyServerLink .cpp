@@ -31,8 +31,8 @@ using namespace std;
 namespace Network {
 
 void SkyReceiver::InitialMessageData(InitialMessage init_message) {
-  max_players_ = init_message.maxClients();
-  my_server_slot_ = init_message.clientIndex();
+  max_players_ = init_message.max_clients();
+  my_server_slot_ = init_message.client_index();
 }
 
 void SkyReceiver::Disconnection() {

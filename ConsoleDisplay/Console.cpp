@@ -94,7 +94,7 @@ bool Console::UpdateFromData(VecSharQueue& data) {
   bool character_updated = false;
   for (size_t i = 0; i < data.size(); ++i) {
     std::vector<char> packed_packet = data[i]->Pop();
-    if(data[i]) {
+    if(*data[i]) {
       auto packet = Network::Packet::Packet(packed_packet);
       if(packet.type() == Network::Packet::Type::kProperties) {
         Game::Property::Stream stream{packet.data()};

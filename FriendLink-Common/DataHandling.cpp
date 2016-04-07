@@ -49,7 +49,7 @@ Packet::Packet(vector<char> packed_packet) {
 
     vector<char> header;
     header.reserve(kHeaderSize);
-    header.insert(header.begin(), iterator, iterator + kHeaderSize);
+    header.insert(header.end(), iterator, iterator + kHeaderSize);
     iterator += kHeaderSize;
 
     client_ = Unpack_uint8(header.back());
@@ -59,9 +59,8 @@ Packet::Packet(vector<char> packed_packet) {
     header.pop_back(); //get ride of the type
 
     uint32_t data_size = Unpack_uint32(header);
-    vector<char> data;
-    data.reserve(data_size);
-    data.insert(data.begin(), iterator, packed_packet.end());
+    data_.reserve(data_size);
+    data_.insert(data_.begin(), iterator, packed_packet.end());
   }
 }
 vector<char> Packet::Packed() const {
@@ -76,7 +75,7 @@ vector<char> Packet::Packed() const {
 vector<char> Packet::Header() const {
   auto header = Pack_uint16(kUniqueCode);
   auto data_size = Pack_uint32(DataSize());
-  header.insert(header.begin(), data_size.begin(), data_size.end());
+  header.insert(header.end(), data_size.begin(), data_size.end());
   header.push_back(PackType(type()));
   header.push_back(Pack_uint8(client()));
   return header;
@@ -108,7 +107,7 @@ Status UnpackStatus(Packet status_packet) {
   if (status_packet.type() != Type::kStatus) {
     throw std::runtime_error("Expected property of type kStatus.");
   }
-  uint8_t x = Network::Unpack_uint8(status_packet.data()[0]);
+  uint8_t x = Unpack_uint8(status_packet.data()[0]);
   if (x < 0 || kSizeOfStatus <= x) {
     throw std::runtime_error("Status unpack out of range.");
   }
@@ -141,7 +140,7 @@ Packet::Packet InitialMessage::Packed() const {
 	return {Packet::Type::kInitialMessage, max_clients_, message};
 }
 void Send(Socket& socket, InitialMessage message) {
-	Send(socket, message.Packed());
+	Packet::Send(socket, message.Packed());
 }
 
 namespace {

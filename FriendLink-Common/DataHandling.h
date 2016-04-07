@@ -65,12 +65,12 @@ class Packet {
    *  @param packed_packet A vector<char> that represents a packed_packet.
    *  @exception runtime_error Initializer code did not match.
    */
-  Packet(std::vector<char> packed_packet);
+  explicit Packet(std::vector<char> packed_packet);
 	Type type() const { return type_; }
 	uint8_t client() const { return client_; }
 	const std::vector<char>&  data() const { return data_; }
 	uint32_t DataSize() const { return data().size(); }
-	uint32_t PackedSize() const { return kHeaderSize +DataSize(); }
+	uint32_t PackedSize() const { return sizeof(uint16_t)+kHeaderSize +DataSize(); }
 	std::vector<char> Packed() const;
  
  private:
@@ -127,8 +127,8 @@ class InitialMessage {
    *  Did the initial message report an accepted connection.
    */
   bool ConnectionAccepted() { return client_slot_ <= max_clients_; }
-	uint8_t maxClients() const { return max_clients_; }
-	uint8_t clientIndex() const { return client_slot_; }
+	uint8_t max_clients() const { return max_clients_; }
+	uint8_t client_index() const { return client_slot_; }
   /**
    *  Packs the initial message into a packet ready to send.
    *  @return a packet of type kInitialMessage

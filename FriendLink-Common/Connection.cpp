@@ -151,9 +151,9 @@ void Socket::Close() {
 	}
 }
 bool Socket::IsTcp() const {
-  char type;
-  int length = sizeof(char);
-  int error = getsockopt(socket_, SOL_SOCKET, SO_TYPE, &type, &length);
+  int type;
+  int length = sizeof(int);
+  int error = getsockopt(socket_, SOL_SOCKET, SO_TYPE, (char*)&type, &length);
   
   if (error == SOCKET_ERROR) {
     throw SocketOptionException(WSAGetLastError());
@@ -212,12 +212,13 @@ void ConnectTo(Address& address, Socket& connecting_socket) {
 std::unique_ptr<Socket> ConnectTo(const sockaddr_in& address,
                                   int ai_socktype,
                                   int ai_protocol) {
-  auto socket = std::make_unique<Socket>(
+  auto socket = std::unique_ptr<Socket>( new 
       Socket(address.sin_family, ai_socktype, ai_protocol));
   int error = connect(socket->Get(), (SOCKADDR *)&address, sizeof(address));
-  if(error != SOCKET_ERROR) {
+  if(error == SOCKET_ERROR) {
     throw ConnectException(WSAGetLastError());
   }
+  Error::LogToFile(AddressToString(address));
   return move(socket);
 }
 bool Connect(const addrinfo& address, Socket& socket) {
@@ -273,21 +274,25 @@ void ListenOn(const Socket& socket) {
 	}
 }
 std::unique_ptr<Socket> Accept(const Socket& listen_socket) {
-  auto socket = std::make_unique<Socket>(accept(listen_socket.Get(), NULL, NULL));
+  auto socket = std::unique_ptr<Socket>(new Socket(
+      accept(listen_socket.Get(), NULL, NULL)));
 	if (!socket->IsValid()) {
 		throw AcceptException(WSAGetLastError());
 	}
   return move(socket);
 }
 std::unique_ptr<Socket> Accept(const Socket& listen_socket,
-                               std::shared_ptr<sockaddr_in> address) {
-	int address_size = sizeof(*address);
-  auto socket = std::make_unique<Socket>(
-      accept(listen_socket.Get(), (SOCKADDR *)address.get(), &address_size));
+                               std::shared_ptr<sockaddr_in>& address) {
+	int address_size = sizeof(sockaddr_in);
+  sockaddr_in client_address;
+  auto socket = std::unique_ptr<Socket>( new Socket(
+      accept(listen_socket.Get(), (SOCKADDR *)&client_address, &address_size)));
 	if (!socket->IsValid()) {
 		throw AcceptException(WSAGetLastError());
 	}
-		
+  Error::LogToFile(AddressToString(client_address));
+	address.reset(new sockaddr_in(client_address));
+  Error::LogToFile(AddressToString(*address));
 	return move(socket);
 }
 

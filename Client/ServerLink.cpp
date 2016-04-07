@@ -86,12 +86,16 @@ bool ServerLink::IsActive() const {
 }
 void ServerLink::ReceiveInitialMessage() {
   while (IsActive()) {
+    Error::LogToFile("0 ReceiveInitialmessage");
     auto packet = Packet::Receive(*socket_tcp_);
+    Error::LogToFile("1 ReceiveInitialmessage");
     if (packet.type() == Packet::Type::kInitialMessage) {
-      auto init_message = InitialMessage(packet.data());
+      Error::LogToFile("2 ReceiveInitialmessage");
+      auto init_message = InitialMessage(packet);
+      Error::LogToFile("3 ReceiveInitialmessage");
       handle_received_.InitialMessageData(init_message);
-      server_slot_ = init_message.clientIndex();
-      if (server_slot_ >= init_message.maxClients()) {
+      server_slot_ = init_message.client_index();
+      if (server_slot_ >= init_message.max_clients()) {
         handle_received_.ErrorMessage("Server is full.");
         Error::LogToFile("Server is full.");
         Disconnect();
@@ -102,6 +106,7 @@ void ServerLink::ReceiveInitialMessage() {
       return;
     }
   }
+  Error::LogToFile("initial message recieved.");
 }
 void ServerLink::SendLoop() {
 	while (IsActive()) {

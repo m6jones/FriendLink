@@ -304,7 +304,7 @@ std::unique_ptr<Socket> Accept(const Socket& listen_socket);
  *  @exception AcceptException
  */
 std::unique_ptr<Socket> Accept(const Socket& listen_socket, 
-                               std::shared_ptr<sockaddr_in> address);
+                               std::shared_ptr<sockaddr_in>& address);
 	
 /**
  *  From Brian "Beej Jorgensen" Hall, Version 3.0.20 March 11, 2016
