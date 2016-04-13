@@ -4,7 +4,7 @@ A Skyrim mod that allows you to appear in other Skyrim worlds as a ball of energ
 #Requires
 - Skyrim
 - SKSE - build 1.7.3 - http://skse.silverlock.org/
-- ScriptDragon build - v1.9.32.0 - http://www.dev-c.com/skyrim/scriptdragon/
+- ScriptDragon - build v1.9.32.0 - http://www.dev-c.com/skyrim/scriptdragon/
 
 #Download
 - Server: https://github.com/m6jones/FriendLink/raw/master/Downloads/FriendLink-Server.7z
