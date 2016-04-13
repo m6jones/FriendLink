@@ -159,6 +159,7 @@ class Traversable : public Standard {
    *         attached and be an active client.
    */
   Traversable(UInt32 translator_object_refr);
+  ~Traversable();
   void MarkTranslationComplete() { translate->MarkComplete(); }
 
  private:

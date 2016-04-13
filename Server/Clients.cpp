@@ -67,10 +67,12 @@ bool Client::IsActive() {
          socket_udp_ && socket_udp_->IsValid();
 }
 void Client::Disconnect() { 
-	connected = false;
-  clients_.SendReliableToAll(
-      Packet::PackStatus(uint8_t(my_server_slot_), 
-                         Packet::Status::kDisconnected));
+	if(connected) {
+    clients_.SendReliableToAll(
+        Packet::PackStatus(uint8_t(my_server_slot_), 
+                            Packet::Status::kDisconnected));
+  }
+  connected = false;
 }
 void Client::SendReliable(Packet::Packet packet) {
   if (IsActive() && my_server_slot_ != packet.client()) {
@@ -98,7 +100,7 @@ void Client::SendLoop() {
           something_sent = true;
         }
 			}
-      if(something_sent) {
+      if(!something_sent) {
         this_thread::sleep_for(chrono::milliseconds(1));
       }
 		} catch (NetworkException e) {
@@ -108,7 +110,6 @@ void Client::SendLoop() {
 	}
 
   try {
-    //Network::Send(*socket_udp_, {});
     socket_udp_->Shutdown(SD_SEND);
     socket_tcp_->Shutdown(SD_SEND);
   } catch (ShutdownException e) {
@@ -176,7 +177,8 @@ void Clients::SendInitialClientDataTo(Socket& socket) {
 }
 Listen::Listen(size_t maxClients, std::string port, std::string port_udp) 
     : clients_(maxClients) {
-  client_port_ = (u_short)strtoul(port_udp.c_str(), NULL, 0);
+  client_port_ = (u_short)strtoul(port.c_str(), NULL, 0);
+  server_port_ = (u_short)strtoul(port_udp.c_str(), NULL, 0);
   //Bind udp listener
   AddressHint hints_udp {AF_INET,SOCK_DGRAM, IPPROTO_UDP, AI_PASSIVE};
   Address address_udp{{}, port_udp, hints_udp};
@@ -212,7 +214,6 @@ void Listen::AcceptClient() {
   try {
     auto address = make_shared<sockaddr_in>();
     auto client_socket_tcp = Accept(*listener_tcp_, address);
-    Error::LogToFile(AddressToString(*address));
     //Connecting to client receiver
     SetAddressPort(*address, client_port_);
     auto client_socket_udp = ConnectTo(*address, SOCK_DGRAM, IPPROTO_UDP);

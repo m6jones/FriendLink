@@ -151,6 +151,7 @@ class Listen {
   Wsa wsa_startup_ {};
   Clients clients_;
   u_short client_port_ = (u_short)strtoul(kDefaultPortClientReceiver, NULL, 0);
+  u_short server_port_ = (u_short)strtoul(kDefaultPortServerReceiver, NULL, 0);
   std::unique_ptr<Socket> listener_tcp_;
   std::unique_ptr<Socket> listener_udp_;
   std::thread thread_tcp_;

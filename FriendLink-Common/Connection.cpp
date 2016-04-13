@@ -36,7 +36,6 @@ Wsa::Wsa() {
 	}
 }
 Wsa::~Wsa() {
-  Error::LogToFile("Connection deleted");
 	if (WSACleanup() == SOCKET_ERROR) {
 		LogCleanupError(WSAGetLastError());
 	}
@@ -218,7 +217,6 @@ std::unique_ptr<Socket> ConnectTo(const sockaddr_in& address,
   if(error == SOCKET_ERROR) {
     throw ConnectException(WSAGetLastError());
   }
-  Error::LogToFile(AddressToString(address));
   return move(socket);
 }
 bool Connect(const addrinfo& address, Socket& socket) {
@@ -290,9 +288,7 @@ std::unique_ptr<Socket> Accept(const Socket& listen_socket,
 	if (!socket->IsValid()) {
 		throw AcceptException(WSAGetLastError());
 	}
-  Error::LogToFile(AddressToString(client_address));
 	address.reset(new sockaddr_in(client_address));
-  Error::LogToFile(AddressToString(*address));
 	return move(socket);
 }
 
@@ -306,7 +302,7 @@ void *get_in_addr(SOCKADDR *sa) {
 std::string AddressToString(const sockaddr_in& sa) {
   char s[INET6_ADDRSTRLEN];
   inet_ntop(sa.sin_family, get_in_addr(((SOCKADDR *)&sa)), s, sizeof(s));
-  std::string result (s,INET6_ADDRSTRLEN);
+  std::string result (s, sizeof(sa));
   result += ":"+std::to_string(ntohs(sa.sin_port));
   return result;
 }

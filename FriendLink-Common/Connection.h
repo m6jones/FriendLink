@@ -33,10 +33,10 @@ SOFTWARE.
 #include "Buffers.h"
 
 namespace Network {
-static constexpr auto kDefaultPortClientReceiver = "29015";
-static constexpr auto kDefaultPortServerReceiver = "29016";
-static constexpr int kBufferSize = 1024;
-static constexpr int kAntiCongestion = 35; //milliseconds
+constexpr auto kDefaultPortClientReceiver = "29015";
+constexpr auto kDefaultPortServerReceiver = "29016";
+constexpr int kBufferSize = 1024;
+constexpr int kAntiCongestion = 35; //milliseconds
 
 /**
  *  A wrapper for WSAStartup (using version 2,2) and WSACleanup.

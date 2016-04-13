@@ -107,8 +107,8 @@ bool Console::UpdateFromData(VecSharQueue& data) {
         if (status == Network::Packet::Status::kNew) {
           server_info_.AddOneClient();
         } else if (status == Network::Packet::Status::kDisconnected) {
-          server_info_.SubtractOneClient();
           clients.Clear(packet.client());
+          server_info_.SubtractOneClient();
         }
       }
       character_updated = true;
@@ -119,7 +119,10 @@ bool Console::UpdateFromData(VecSharQueue& data) {
 void Console::Update() {
   while (console_on_) {
     try {
-      if(!UpdateFromData(data_) && !UpdateFromData(reliable_data_)) {
+      //Make sure both functions are always called.
+      bool did_work = UpdateFromData(data_);
+      did_work = UpdateFromData(reliable_data_) || did_work;
+      if(!did_work) {
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
       }
     } catch (std::runtime_error& err) {

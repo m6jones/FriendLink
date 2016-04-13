@@ -221,5 +221,9 @@ Traversable::Traversable(UInt32 form_id) : Standard() {
   SetObjectRefr(PlaceAtMe({(TESObjectREFR*)*g_thePlayer}, form_id, true, false));
   translate.reset(new Translator(object_refr()));
 }
+Traversable::~Traversable() {
+  translate->Stop();
+  ScriptDragon::ObjectReference::Disable(object_refr(), false);
+}
 } //namespace Player
 } //namespace Game

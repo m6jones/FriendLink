@@ -46,13 +46,11 @@ ServerLink::ServerLink(std::string ip, std::string port,
   socket_send_ = move(ConnectTo(address_send));
 }
 ServerLink::~ServerLink() {
-  Error::LogToFile("ServerLink deleted Start");
 	Disconnect();
   thread_send_.join();
   Close(socket_receive_.get());
   thread_receive_udp_.join();
   thread_receive_tcp_.join();
-  Error::LogToFile("ServerLink deleted End");
 }
 void ServerLink::SendReliable(Game::Property::Stream properties) {
 	Packet::Packet packet 
@@ -86,13 +84,9 @@ bool ServerLink::IsActive() const {
 }
 void ServerLink::ReceiveInitialMessage() {
   while (IsActive()) {
-    Error::LogToFile("0 ReceiveInitialmessage");
     auto packet = Packet::Receive(*socket_tcp_);
-    Error::LogToFile("1 ReceiveInitialmessage");
     if (packet.type() == Packet::Type::kInitialMessage) {
-      Error::LogToFile("2 ReceiveInitialmessage");
       auto init_message = InitialMessage(packet);
-      Error::LogToFile("3 ReceiveInitialmessage");
       handle_received_.InitialMessageData(init_message);
       server_slot_ = init_message.client_index();
       if (server_slot_ >= init_message.max_clients()) {

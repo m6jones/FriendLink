@@ -37,7 +37,7 @@ void Help(std::string name) {
   cerr << "Usage: " << name << " [option(s)]\n"
     << "Options:\n"
     << "\t-h,--help,/?\t\tShow this help message\n"
-    << "\t-n,--name server name\tSets server name\n"
+    << "\t-n,--name server name\tSets the server name\n"
     << "\t-mp,--max_players [0-255]\tSets the max number of players allowed on the server.\n"
     << "\t-p1,--port1 port\tSets port the server(tcp) and client(udp) will listen on. \n"
     << "\t-p2,--port2 port\tSets port the server(udp) will listen on\n"
